@@ -30,6 +30,12 @@ if (isset($_POST['delete_row'])) {
     $stmt = $pdo->prepare('DELETE FROM transaction_detail WHERE transaction_tsc_id = ?');
     $stmt->execute([$rowId]);
 
+    $stmt = $pdo->prepare('DELETE FROM payment WHERE transaction_tsc_id = ?');
+    $stmt->execute([$rowId]);
+
+    $stmt = $pdo->prepare('DELETE FROM delivery WHERE transaction_tsc_id = ?');
+    $stmt->execute([$rowId]);
+
     // Delete the row from the transaction table
     $stmt = $pdo->prepare('DELETE FROM transaction WHERE tsc_id = ?');
     $stmt->execute([$rowId]);
