@@ -67,6 +67,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $address = $_POST['address'] ?? '';
 
+    if ($address === '') {
+        // Fetch the customer's address from the database
+        $stmt = $pdo->prepare('SELECT c.cst_address FROM customer c JOIN transaction t ON c.cst_id = t.customer_cst_id WHERE t.tsc_id = ?');
+        $stmt->execute([$rowId]);
+        $customer = $stmt->fetch();
+    
+        // Assign the address from the customer table to $address
+        $address = $customer['cst_address'];
+    }
+
     $deliveryprice = 0;
     if ($deliveryNeeded) {
         $randomNumber = mt_rand(10000, 30000);
